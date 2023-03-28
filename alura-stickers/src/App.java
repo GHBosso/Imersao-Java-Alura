@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -30,12 +32,19 @@ public class App {
 
 		// Exibir e manipular os dados
 		for (Map<String, String> filme : listaDeFilmes) {
-			System.out.println("Rank: " + filme.get("rank"));
+			
+			String urlImagem = filme.get("image");
+			String titulo = filme.get("title");
+			String nomeArquivo = titulo + ".png";
+			InputStream inputStream = new URL(urlImagem).openStream();
+			
+			GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
+			geradora.cria(inputStream, nomeArquivo);
+			
 			System.out.println("Titulo: " + filme.get("title"));
-			System.out.println("Poster: " + filme.get("image"));
+			System.out.println();
 			System.out.println("Classificação: " + filme.get("imDbRating"));
 			double number = Double.parseDouble(filme.get("imDbRating"));
-
 			for (int i = 1; i <= number; i++) {
 				System.out.print("\u2B50");
 			}
